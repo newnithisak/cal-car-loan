@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Car Loan Pro - Classic Keyboard</title>
+    <title>Car Loan Pro - Clear Start</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
     <script>tailwind.config = { darkMode: 'class' }</script>
@@ -12,6 +12,9 @@
         .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); }
         .dark .glass { background: rgba(15, 23, 42, 0.9); }
         input:focus { outline: none; border-bottom-color: #3b82f6 !important; }
+        /* สไตล์สำหรับช่องที่ยังไม่ได้กรอก */
+        input::placeholder { color: #cbd5e1; opacity: 0.8; }
+        .dark input::placeholder { color: #475569; }
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen pb-20">
@@ -33,7 +36,7 @@
             <div class="grid gap-6">
                 <div class="space-y-1">
                     <label class="text-[10px] font-bold text-slate-400 uppercase">ราคารถยนต์</label>
-                    <input type="text" data-id="price" value="1,000,000" oninput="formatAndCalc(this, 'plan1')" inputmode="numeric" class="w-full bg-transparent text-4xl font-bold border-b-2 border-slate-100 dark:border-slate-800 pb-1">
+                    <input type="text" data-id="price" placeholder="0" oninput="formatAndCalc(this, 'plan1')" inputmode="numeric" class="w-full bg-transparent text-4xl font-bold border-b-2 border-slate-100 dark:border-slate-800 pb-1">
                 </div>
 
                 <div class="space-y-3">
@@ -45,32 +48,34 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="bg-slate-100 dark:bg-slate-900/50 p-4 rounded-3xl space-y-2">
+                    <div class="bg-slate-100 dark:bg-slate-900/50 p-4 rounded-3xl space-y-2 border border-transparent focus-within:border-blue-500 transition-all">
                         <label class="text-[10px] font-bold text-slate-400 uppercase">เงินดาวน์</label>
-                        <input type="text" data-id="down" value="200,000" oninput="autoSetCustom('plan1'); formatAndCalc(this, 'plan1')" inputmode="numeric" class="w-full bg-transparent font-bold text-lg">
+                        <input type="text" data-id="down" placeholder="0" oninput="autoSetCustom('plan1'); formatAndCalc(this, 'plan1')" inputmode="numeric" class="w-full bg-transparent font-bold text-lg">
                         <select data-id="down_percent" onchange="syncDown('plan1')" class="bg-transparent text-blue-600 text-[10px] font-bold outline-none">
-                            <option value="custom">ระบุเอง</option>
+                            <option value="custom" selected>ระบุเอง</option>
                             <option value="15">15%</option>
-                            <option value="20" selected>20%</option>
+                            <option value="20">20%</option>
                             <option value="25">25%</option>
+                            <option value="30">30%</option>
                         </select>
                     </div>
                     
-                    <div class="bg-slate-100 dark:bg-slate-900/50 p-4 rounded-3xl space-y-2">
+                    <div class="bg-slate-100 dark:bg-slate-900/50 p-4 rounded-3xl space-y-2 border border-transparent focus-within:border-blue-500 transition-all">
                         <label class="text-[10px] font-bold text-slate-400 uppercase">ระยะเวลาผ่อน</label>
                         <select data-id="years" onchange="calc('plan1')" class="w-full bg-transparent font-bold text-lg mt-1 outline-none">
+                            <option value="0" selected>เลือกปี...</option>
                             <option value="4">4 ปี (48 งวด)</option>
-                            <option value="5" selected>5 ปี (60 งวด)</option>
+                            <option value="5">5 ปี (60 งวด)</option>
                             <option value="6">6 ปี (72 งวด)</option>
                             <option value="7">7 ปี (84 งวด)</option>
                             <option value="8">8 ปี (96 งวด)</option>
                         </select>
-                        <p class="text-[10px] text-slate-400 font-bold uppercase">เลือกจำนวนปี</p>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase">จำนวนปี</p>
                     </div>
 
-                    <div class="bg-slate-100 dark:bg-slate-900/50 p-4 rounded-3xl space-y-2">
+                    <div class="bg-slate-100 dark:bg-slate-900/50 p-4 rounded-3xl space-y-2 border border-transparent focus-within:border-blue-500 transition-all">
                         <label class="text-[10px] font-bold text-slate-400 uppercase">ดอกเบี้ย/ปี (%)</label>
-                        <input type="text" data-id="interest" value="2.5" oninput="calc('plan1')" inputmode="decimal" class="w-full bg-transparent font-bold text-lg">
+                        <input type="text" data-id="interest" placeholder="0.00" oninput="calc('plan1')" inputmode="decimal" class="w-full bg-transparent font-bold text-lg">
                         <p class="text-[10px] text-orange-500 font-bold uppercase">Flat Rate</p>
                     </div>
                 </div>
@@ -79,7 +84,7 @@
                     <div class="flex items-center justify-between p-4 bg-orange-50 dark:bg-orange-950/20 rounded-2xl border border-orange-100 dark:border-orange-900/30">
                         <div class="flex-1">
                             <label class="text-[10px] font-bold text-orange-600 uppercase">ประกัน PPI</label>
-                            <input type="text" data-id="insurance" value="0" oninput="formatAndCalc(this, 'plan1')" inputmode="numeric" class="bg-transparent font-bold w-full text-lg">
+                            <input type="text" data-id="insurance" placeholder="0" oninput="formatAndCalc(this, 'plan1')" inputmode="numeric" class="bg-transparent font-bold w-full text-lg">
                         </div>
                         <label class="flex items-center gap-2 text-[10px] font-bold text-orange-600 cursor-pointer">
                             <input type="checkbox" data-id="inc_ins" onchange="calc('plan1')"> <span>รวมยอดกู้</span>
@@ -97,7 +102,7 @@
                     <p class="text-[10px] text-slate-400 dark:text-blue-100 uppercase mb-1 tracking-widest">ค่างวดต่อเดือน</p>
                     <p class="text-6xl font-black mb-1"><span data-id="res-monthly">0</span></p>
                     <p class="text-[10px] text-slate-400 dark:text-blue-200">
-                        <span data-id="res-period">60</span> งวด | <span data-id="res-vattxt"></span>
+                        <span data-id="res-period">0</span> งวด | <span data-id="res-vattxt">รอกรอกข้อมูล</span>
                     </p>
                 </div>
 
@@ -143,21 +148,17 @@
 
     <script>
         const parse = (s) => parseFloat(s.toString().replace(/,/g, '')) || 0;
-        const fmt = (n) => isNaN(n) ? "0" : Math.round(n).toLocaleString();
+        const fmt = (n) => (isNaN(n) || n === 0) ? "0" : Math.round(n).toLocaleString();
 
         function formatAndCalc(el, planId) {
             let cursorPosition = el.selectionStart;
             let originalLength = el.value.length;
-            
             let val = el.value.replace(/,/g, '');
             if (!isNaN(val) && val !== '') {
                 el.value = Number(val).toLocaleString();
             }
-            
-            // รักษาตำแหน่งเคอร์เซอร์
             let newLength = el.value.length;
             el.selectionEnd = cursorPosition + (newLength - originalLength);
-
             if (el.dataset.id === 'price') syncDown(planId);
             calc(planId);
         }
@@ -206,9 +207,16 @@
             const netPrice = price - discTotal;
             let loan = netPrice - down;
             if (incIns) loan += ins;
-            const totalInt = loan * (intr/100) * yrs;
+            
             const months = yrs * 12;
-            let monthly = (loan + totalInt) / months;
+            let monthly = 0;
+            let totalInt = 0;
+
+            if (months > 0 && loan > 0) {
+                totalInt = loan * (intr/100) * yrs;
+                monthly = (loan + totalInt) / months;
+            }
+
             let vatAmount = 0;
             if (addVat) {
                 vatAmount = monthly * 0.07;
@@ -217,8 +225,8 @@
             const totalAllPay = down + (monthly * months);
 
             p.querySelector('[data-id="res-monthly"]').innerText = fmt(monthly);
-            p.querySelector('[data-id="res-period"]').innerText = months;
-            p.querySelector('[data-id="res-vattxt"]').innerText = addVat ? `รวม VAT 7% (${fmt(vatAmount)}.-)` : "ไม่รวม VAT";
+            p.querySelector('[data-id="res-period"]').innerText = months || 0;
+            p.querySelector('[data-id="res-vattxt"]').innerText = addVat ? `รวม VAT 7% (${fmt(vatAmount)}.-)` : (price > 0 ? "ไม่รวม VAT" : "รอกรอกข้อมูล");
             p.querySelector('[data-id="res-netprice"]').innerText = fmt(netPrice);
             p.querySelector('[data-id="res-loan"]').innerText = fmt(loan);
             p.querySelector('[data-id="res-netdown"]').innerText = fmt(down);
@@ -235,7 +243,7 @@
                 const input = row.querySelector('.disc-input');
                 discTotal += (input.dataset.unit === 'pct') ? (price * (parse(input.value) / 100)) : parse(input.value);
             });
-            if (dp !== 'custom') {
+            if (dp !== 'custom' && price > 0) {
                 p.querySelector('[data-id="down"]').value = fmt((price - discTotal) * (parseFloat(dp)/100));
             }
             calc(planId);
@@ -267,7 +275,7 @@
         }
 
         function toggleDarkMode() { document.documentElement.classList.toggle('dark'); }
-        window.onload = () => calc('plan1');
+        // ลบ window.onload calc ออกเพื่อให้เริ่มต้นเป็น 0 ทั้งหมด
     </script>
 </body>
 </html>
