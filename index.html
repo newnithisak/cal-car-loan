@@ -3,33 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Car Loan Pro - Compact Edition</title>
+    <title>Car Loan Pro - Optimized Layout</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
     <script>tailwind.config = { darkMode: 'class' }</script>
     <style>
-        body { 
-            font-family: 'Kanit', sans-serif; 
-            -webkit-tap-highlight-color: transparent;
-            overflow-x: hidden; /* ป้องกันการเลื่อนซ้ายขวา */
-        }
+        body { font-family: 'Kanit', sans-serif; -webkit-tap-highlight-color: transparent; overflow-x: hidden; }
         .glass { background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(10px); }
         .dark .glass { background: rgba(15, 23, 42, 0.95); }
-        
-        /* ป้องกันจอกระตุกและซูม */
         input, select { font-size: 16px !important; }
-        
-        /* ปรับแต่ง Scrollbar ให้ดูสะอาด */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-
-        /* ปรับขนาดค่างวดให้เล็กลงตามหน้าจอ */
-        @media (max-width: 380px) {
-            .big-number { font-size: 2.75rem !important; }
-        }
+        @media (max-width: 380px) { .big-number { font-size: 2.5rem !important; } }
     </style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen">
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen pb-10">
 
     <nav class="sticky top-0 z-40 glass border-b border-slate-200 dark:border-slate-800 p-3 px-4 flex justify-between items-center">
         <div class="flex items-center gap-1.5"><span class="text-xl">🏎️</span><span class="font-bold text-base">Car Loan Pro</span></div>
@@ -41,7 +27,7 @@
     <main class="max-w-md mx-auto p-3 space-y-4">
         <div id="plan1" class="glass rounded-[2rem] p-4 border border-slate-200 dark:border-slate-800 shadow-lg space-y-4">
             <div class="flex justify-between items-center">
-                <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/40 text-blue-600 text-[9px] font-bold rounded-md uppercase tracking-tighter">แผนที่ 1</span>
+                <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/40 text-blue-600 text-[9px] font-bold rounded-md uppercase">แผนที่ 1</span>
                 <input type="text" placeholder="ชื่อรุ่นรถ..." class="bg-transparent border-b border-dashed text-right text-xs outline-none w-1/2">
             </div>
 
@@ -54,7 +40,7 @@
                 <div class="space-y-2">
                     <div class="flex justify-between items-center">
                         <label class="text-[10px] font-bold text-green-600 uppercase">รายการส่วนลด</label>
-                        <button onclick="addDiscount('plan1')" class="text-[9px] bg-green-500 text-white px-2 py-1 rounded-lg font-bold shadow-sm">+ เพิ่ม</button>
+                        <button onclick="addDiscount('plan1')" class="text-[9px] bg-green-500 text-white px-2 py-1 rounded-lg font-bold shadow-sm">+ เพิ่มส่วนลด</button>
                     </div>
                     <div data-id="discount-list" class="space-y-1.5"></div>
                 </div>
@@ -70,13 +56,11 @@
                             <option value="25">25%</option>
                         </select>
                     </div>
-                    
                     <div class="bg-slate-100 dark:bg-slate-900/50 p-3 rounded-2xl border border-transparent focus-within:border-blue-500">
                         <label class="text-[9px] font-bold text-slate-400 uppercase">ดอกเบี้ย/ปี (%)</label>
-                        <input type="text" data-id="interest" placeholder="0.00" oninput="calc('plan1')" inputmode="decimal" class="w-full bg-transparent font-bold text-base h-7">
-                        <p class="text-[9px] text-orange-500 font-bold uppercase mt-1 leading-none">Flat Rate</p>
+                        <input type="text" data-id="interest" placeholder="0.00" oninput="calc('plan1')" inputmode="decimal" class="w-full bg-transparent font-bold text-base">
+                        <p class="text-[9px] text-orange-500 font-bold uppercase mt-1">Flat Rate</p>
                     </div>
-
                     <div class="col-span-2 bg-slate-100 dark:bg-slate-900/50 p-3 rounded-2xl">
                         <label class="text-[9px] font-bold text-slate-400 uppercase">ระยะเวลาผ่อน (ปี)</label>
                         <select data-id="years" onchange="calc('plan1')" class="w-full bg-transparent font-bold text-base mt-1 outline-none">
@@ -96,11 +80,11 @@
                             <label class="text-[9px] font-bold text-orange-600 uppercase">ประกัน PPI</label>
                             <input type="text" data-id="insurance" placeholder="0" oninput="formatAndCalc(this, 'plan1')" inputmode="numeric" class="bg-transparent font-bold w-full text-base">
                         </div>
-                        <label class="flex items-center gap-1.5 text-[9px] font-bold text-orange-600">
+                        <label class="flex items-center gap-1.5 text-[9px] font-bold text-orange-600 cursor-pointer">
                             <input type="checkbox" data-id="inc_ins" onchange="calc('plan1')" class="w-3.5 h-3.5"> <span>รวมกู้</span>
                         </label>
                     </div>
-                    <label class="flex items-center p-3 bg-blue-50 dark:bg-blue-950/20 rounded-xl border border-blue-100 dark:border-blue-900/30 text-[10px] font-bold text-slate-600 dark:text-slate-300">
+                    <label class="flex items-center p-3 bg-blue-50 dark:bg-blue-950/20 rounded-xl border border-blue-100 dark:border-blue-900/30 text-[10px] font-bold text-slate-600 dark:text-slate-300 cursor-pointer">
                         <input type="checkbox" data-id="add_vat" onchange="calc('plan1')" class="mr-2 w-3.5 h-3.5">
                         <span>บวกภาษี VAT 7% ในค่างวด</span>
                     </label>
@@ -109,45 +93,29 @@
 
             <div class="bg-slate-900 dark:bg-blue-700 p-5 rounded-[1.75rem] text-white shadow-xl space-y-4 overflow-hidden">
                 <div class="text-center">
-                    <p class="text-[9px] text-slate-400 dark:text-blue-100 uppercase tracking-widest mb-1">ค่างวด/เดือน</p>
+                    <p class="text-[9px] text-slate-400 dark:text-blue-100 uppercase tracking-widest mb-1">ค่างวดต่อเดือน</p>
                     <p class="big-number text-5xl font-black truncate"><span data-id="res-monthly">0</span></p>
                     <p class="text-[9px] text-slate-400 dark:text-blue-200 mt-1">
                         <span data-id="res-period">0</span> งวด | <span data-id="res-vattxt">รอกรอกข้อมูล</span>
                     </p>
                 </div>
-
                 <div class="grid grid-cols-2 gap-y-3 gap-x-4 pt-4 border-t border-white/10 text-[11px]">
-                    <div>
-                        <p class="text-slate-400 mb-0.5">ส่วนลดรวม</p>
-                        <p data-id="res-disctotal" class="font-bold text-green-400">0</p>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-slate-400 mb-0.5">ราคาหลังลด</p>
-                        <p data-id="res-netprice" class="font-bold text-blue-300">0</p>
-                    </div>
-                    <div>
-                        <p class="text-slate-400 mb-0.5">ยอดกู้สุทธิ</p>
-                        <p data-id="res-loan" class="font-bold">0</p>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-slate-400 mb-0.5">ดอกเบี้ยรวม</p>
-                        <p data-id="res-int" class="font-bold text-yellow-400">0</p>
-                    </div>
+                    <div><p class="text-slate-400 mb-0.5 uppercase">ส่วนลดรวม</p><p data-id="res-disctotal" class="font-bold text-green-400">0</p></div>
+                    <div class="text-right"><p class="text-slate-400 mb-0.5 uppercase">ราคาหลังหักส่วนลด</p><p data-id="res-netprice" class="font-bold text-blue-300">0</p></div>
+                    <div><p class="text-slate-400 mb-0.5 uppercase">ยอดกู้สุทธิ</p><p data-id="res-loan" class="font-bold">0</p></div>
+                    <div class="text-right"><p class="text-slate-400 mb-0.5 uppercase">ดอกเบี้ยรวม</p><p data-id="res-int" class="font-bold text-yellow-400">0</p></div>
                 </div>
-
                 <div class="pt-3 border-t border-white/10 flex justify-between items-center">
-                    <p class="text-[10px] text-slate-400 font-bold uppercase">จ่ายรวมทั้งสิ้น</p>
+                    <p class="text-[10px] text-slate-400 font-bold uppercase">จ่ายรวมทั้งสิ้น (Total Cost)</p>
                     <p data-id="res-totalall" class="text-2xl font-black text-orange-400">0</p>
                 </div>
             </div>
         </div>
-        
         <div id="plan2-container" class="hidden opacity-0 transition-all duration-300"><div id="plan2"></div></div>
     </main>
 
     <nav class="fixed bottom-4 left-1/2 -translate-x-1/2 h-14 glass rounded-2xl border border-slate-200 dark:border-slate-800 flex items-center px-6 gap-6 shadow-2xl z-40">
         <button onclick="toggleDarkMode()" class="text-lg">🌓</button>
-        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="text-sm font-bold text-slate-400">Top</button>
         <button onclick="location.reload()" class="text-red-500 text-[10px] font-black uppercase">Reset</button>
     </nav>
 
@@ -171,14 +139,12 @@
             const price = parse(p.querySelector('[data-id="price"]').value);
             const dpValue = p.querySelector('[data-id="down_percent"]').value;
             const downInput = p.querySelector('[data-id="down"]');
-            
             let discTotal = 0;
             p.querySelectorAll('.disc-row').forEach(row => {
                 const input = row.querySelector('.disc-input');
                 const unit = row.querySelector('.disc-unit').value;
                 discTotal += (unit === 'pct') ? (price * (parse(input.value) / 100)) : parse(input.value);
             });
-
             if (dpValue !== 'custom' && price > 0) {
                 downInput.value = fmt((price - discTotal) * (parseFloat(dpValue) / 100));
             }
@@ -210,19 +176,14 @@
             const netPrice = price - discTotal;
             let loan = netPrice - down;
             if (incIns) loan += ins;
-            
             const months = yrs * 12;
             let monthly = 0, totalInt = 0;
             if (months > 0 && loan > 0) {
                 totalInt = loan * (intr/100) * yrs;
                 monthly = (loan + totalInt) / months;
             }
-
             let vatAmount = 0;
-            if (addVat) {
-                vatAmount = monthly * 0.07;
-                monthly += vatAmount;
-            }
+            if (addVat) { vatAmount = monthly * 0.07; monthly += vatAmount; }
 
             p.querySelector('[data-id="res-monthly"]').innerText = fmt(monthly);
             p.querySelector('[data-id="res-period"]').innerText = months || 0;
@@ -237,17 +198,18 @@
         function addDiscount(planId) {
             const container = document.querySelector(`#${planId} [data-id="discount-list"]`);
             const div = document.createElement('div');
+            // ใช้ Flexbox: ช่องชื่อ (flex-1) | ช่องตัวเลข+หน่วย (flex-[1.8])
             div.className = "disc-row flex gap-1.5 items-center bg-white/50 dark:bg-slate-900/50 p-1.5 rounded-xl border border-slate-200 dark:border-slate-800";
             div.innerHTML = `
-                <input type="text" placeholder="รายการ..." class="flex-1 bg-transparent text-[13px] outline-none px-1">
-                <div class="flex items-center bg-slate-100 dark:bg-slate-800 rounded-lg overflow-hidden border dark:border-slate-700">
-                    <input type="text" placeholder="0" inputmode="numeric" class="disc-input w-16 p-1.5 text-sm font-bold bg-transparent text-right outline-none" oninput="formatAndCalc(this, '${planId}')">
-                    <select class="disc-unit bg-slate-200 dark:bg-slate-700 text-[10px] font-bold p-1.5 outline-none border-l dark:border-slate-600">
+                <input type="text" placeholder="รายการ..." class="flex-1 bg-transparent text-sm outline-none px-1 min-w-0">
+                <div class="flex-[1.8] flex items-center bg-slate-100 dark:bg-slate-800 rounded-lg overflow-hidden border dark:border-slate-700 min-w-0">
+                    <input type="text" placeholder="0" inputmode="numeric" class="disc-input w-full p-1.5 text-base font-bold bg-transparent text-right outline-none min-w-0" oninput="formatAndCalc(this, '${planId}')">
+                    <select class="disc-unit bg-slate-200 dark:bg-slate-700 text-[10px] font-bold p-1.5 outline-none border-l dark:border-slate-600" onchange="syncDown('${planId}')">
                         <option value="amt">฿</option>
                         <option value="pct">%</option>
                     </select>
                 </div>
-                <button onclick="this.parentElement.remove(); syncDown('${planId}')" class="text-red-400 px-1 text-base">✕</button>
+                <button onclick="this.parentElement.remove(); syncDown('${planId}')" class="text-red-400 px-1 text-base shrink-0">✕</button>
             `;
             container.appendChild(div);
         }
