@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Car Loan Pro - Optimized Layout</title>
+    <title>Car Loan Pro - Smart Down Payment</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
     <script>tailwind.config = { darkMode: 'class' }</script>
@@ -47,18 +47,23 @@
 
                 <div class="grid grid-cols-2 gap-3">
                     <div class="bg-slate-100 dark:bg-slate-900/50 p-3 rounded-2xl border border-transparent focus-within:border-blue-500">
-                        <label class="text-[9px] font-bold text-slate-400 uppercase">เงินดาวน์</label>
+                        <label class="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">เงินดาวน์ <span data-id="down-percent-label" class="text-blue-500 lowercase">(0%)</span></label>
                         <input type="text" data-id="down" placeholder="0" oninput="autoSetCustom('plan1'); formatAndCalc(this, 'plan1')" inputmode="numeric" class="w-full bg-transparent font-bold text-base">
-                        <select data-id="down_percent" onchange="syncDown('plan1')" class="bg-transparent text-blue-600 text-[10px] font-bold outline-none block mt-1">
+                        <select data-id="down_percent" onchange="syncDown('plan1')" class="bg-transparent text-blue-600 text-[10px] font-bold outline-none block mt-1 w-full">
                             <option value="custom" selected>ระบุเอง</option>
                             <option value="15">15%</option>
                             <option value="20">20%</option>
                             <option value="25">25%</option>
+                            <option value="30">30%</option>
+                            <option value="35">35%</option>
+                            <option value="40">40%</option>
+                            <option value="45">45%</option>
+                            <option value="50">50%</option>
                         </select>
                     </div>
-                    <div class="bg-slate-100 dark:bg-slate-900/50 p-3 rounded-2xl border border-transparent focus-within:border-blue-500">
+                    <div class="bg-slate-100 dark:bg-slate-900/50 p-3 rounded-2xl border border-transparent focus-within:border-blue-500 text-right">
                         <label class="text-[9px] font-bold text-slate-400 uppercase">ดอกเบี้ย/ปี (%)</label>
-                        <input type="text" data-id="interest" placeholder="0.00" oninput="calc('plan1')" inputmode="decimal" class="w-full bg-transparent font-bold text-base">
+                        <input type="text" data-id="interest" placeholder="0.00" oninput="calc('plan1')" inputmode="decimal" class="w-full bg-transparent font-bold text-base text-right">
                         <p class="text-[9px] text-orange-500 font-bold uppercase mt-1">Flat Rate</p>
                     </div>
                     <div class="col-span-2 bg-slate-100 dark:bg-slate-900/50 p-3 rounded-2xl">
@@ -130,23 +135,30 @@
             if (!isNaN(val) && val !== '') el.value = Number(val).toLocaleString();
             let newLength = el.value.length;
             el.selectionEnd = cursorPosition + (newLength - originalLength);
+            
             if (el.dataset.id === 'price') syncDown(planId);
             calc(planId);
         }
 
+        // ฟังก์ชันซิงค์เงินดาวน์ พร้อมคำนวณ % ย้อนกลับ
         function syncDown(planId) {
             const p = document.getElementById(planId);
             const price = parse(p.querySelector('[data-id="price"]').value);
-            const dpValue = p.querySelector('[data-id="down_percent"]').value;
+            const dpSelect = p.querySelector('[data-id="down_percent"]');
+            const dpValue = dpSelect.value;
             const downInput = p.querySelector('[data-id="down"]');
+            
             let discTotal = 0;
             p.querySelectorAll('.disc-row').forEach(row => {
                 const input = row.querySelector('.disc-input');
                 const unit = row.querySelector('.disc-unit').value;
                 discTotal += (unit === 'pct') ? (price * (parse(input.value) / 100)) : parse(input.value);
             });
-            if (dpValue !== 'custom' && price > 0) {
-                downInput.value = fmt((price - discTotal) * (parseFloat(dpValue) / 100));
+
+            const netPrice = price - discTotal;
+
+            if (dpValue !== 'custom' && netPrice > 0) {
+                downInput.value = fmt(netPrice * (parseFloat(dpValue) / 100));
             }
             calc(planId);
         }
@@ -174,6 +186,14 @@
             });
 
             const netPrice = price - discTotal;
+
+            // คำนวณ % ย้อนกลับเพื่อโชว์ใน Label
+            let currentPct = 0;
+            if (netPrice > 0) {
+                currentPct = (down / netPrice) * 100;
+            }
+            p.querySelector('[data-id="down-percent-label"]').innerText = `(${currentPct.toFixed(currentPct % 1 === 0 ? 0 : 1)}%)`;
+
             let loan = netPrice - down;
             if (incIns) loan += ins;
             const months = yrs * 12;
@@ -198,7 +218,6 @@
         function addDiscount(planId) {
             const container = document.querySelector(`#${planId} [data-id="discount-list"]`);
             const div = document.createElement('div');
-            // ใช้ Flexbox: ช่องชื่อ (flex-1) | ช่องตัวเลข+หน่วย (flex-[1.8])
             div.className = "disc-row flex gap-1.5 items-center bg-white/50 dark:bg-slate-900/50 p-1.5 rounded-xl border border-slate-200 dark:border-slate-800";
             div.innerHTML = `
                 <input type="text" placeholder="รายการ..." class="flex-1 bg-transparent text-sm outline-none px-1 min-w-0">
